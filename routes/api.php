@@ -16,3 +16,13 @@ Route::resource('students', StudentsController::class)
 Route::resource('classrooms', ClassroomsController::class)
     ->only(['index', 'store', 'show', 'update', 'destroy'])
     ->middleware('auth:sanctum');
+
+Route::prefix('classrooms/{classroom}/students')
+    ->middleware('auth:sanctum')
+    ->group(function () {
+        Route::post('assign', [\App\Http\Controllers\ClassroomStudentsController::class, 'assign'])
+            ->name('classrooms.students.assign');
+
+        Route::post('unassign', [\App\Http\Controllers\ClassroomStudentsController::class, 'unassign'])
+            ->name('classrooms.students.unassign');
+    });
