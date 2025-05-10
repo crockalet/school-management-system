@@ -28,4 +28,11 @@ class Classroom extends Model
         return $this->belongsToMany(Student::class);
     }
 
+    public function canAssignStudents(int $student_count)
+    {
+        $availableSlots = $this->max_students - $this->students()->count();
+
+        return $availableSlots > 0 && $availableSlots >= $student_count;
+    }
+
 }

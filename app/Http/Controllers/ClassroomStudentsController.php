@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\AssignStudentsToClassroom;
+use App\Actions\CanAssignStudentsToClassroom;
 use App\Exceptions\NotEnoughSlotsException;
 use App\Http\Resources\StudentResource;
 use App\Models\Classroom;
@@ -26,20 +26,20 @@ class ClassroomStudentsController extends Controller implements HasMiddleware
     /**
      * Assign students to a class
      */
-    public function assign(Request $request, Classroom $classroom, AssignStudentsToClassroom $assignStudentsToClassroom)
+    public function assign(Request $request, Classroom $classroom, CanAssignStudentsToClassroom $assignStudentsToClassroom)
     {
         $request->validate([
             'students' => 'required|array',
             'students.*' => 'exists:students,id',
         ]);
 
-        try {
-            $assignStudentsToClassroom($classroom, $request->students);
-        } catch (NotEnoughSlotsException $e) {
+        if (! $classroom->canAssignStudents(count($request->students))) {
             throw ValidationException::withMessages([
-                'students' => [$e->getMessage()],
+                'students' => 'Not enough slots available in this class.',
             ]);
         }
+
+        $classroom->students()->sync($request->students, detaching: false);
 
         return response()->json([
             'message' => 'Students assigned successfully.',

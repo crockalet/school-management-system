@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $admin = User::firstOrCreate([
-            'email' => 'admin@example.com',
+            'email' => config('api.admin.email'),
         ], [
             'name' => 'Admin',
             'password' => \Hash::make('password'),
