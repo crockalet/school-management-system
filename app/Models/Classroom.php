@@ -12,7 +12,7 @@ class Classroom extends Model
 
     protected $fillable = [
         'name',
-        'subject',
+        'section',
         'max_students',
     ];
 
@@ -25,7 +25,7 @@ class Classroom extends Model
 
     public function students()
     {
-        return $this->hasMany(Student::class);
+        return $this->belongsToMany(Student::class);
     }
 
 }

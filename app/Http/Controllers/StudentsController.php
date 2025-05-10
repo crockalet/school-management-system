@@ -7,7 +7,6 @@ use App\Http\Requests\Student\UpdateStudentRequest;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use App\Http\Resources\StudentResource;
 use App\Models\Student;
-use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
